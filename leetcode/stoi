@@ -1,0 +1,96 @@
+/*
+要求：将字符串转换为一个有符号整数。其中会涉及到一些数字和字母交叉出现的字符串，譬如“1234a bb”--1234.
+
+实现思路：
+1.有符号、无符号。string.charAt(0) 判断正负或者是直接返回值  --如果带转换字符串的首字符不是数字和‘-’，那么直接返回0；
+2.读取字符串中的字符，当读取的字符范围不在ASCII 的 ‘0’-‘9’之间就停止读取；
+3.用一个32位的数组来存储读取的数字字符；
+4.溢出处理：超过最大值和小于最小值，返回最大或最小值；
+5.由于2^31=2147483648  共10位，所以不必用一个32位的数组来存储读取的字符最多用11位就足够了；当指针超过10直接返回最大最小值。
+*/
+
+一堆的问题亟待解决
+----------
+import java.util.Scanner;
+
+public class MyStoi {
+	public static int[] saveByOrder=new int[11];      //按顺序存储读取的数字
+	public static boolean positive = true ;                //判断读取的字符串的正负，默认为正数
+	public static int readString(String str){             //读取字符串：1.判断正负；2.填充整形数组。返回值返回的是从开始位置连续数字的长度，如果<0,输出0。
+	    if(str.contentEquals(""))//空字符串直接返回 -1
+	    	return -1;
+		int length=str.length();
+		
+		//考虑刚开始就带空格 --“   -42”
+		int transStart=0;
+		for(int i=0;i<str.length();i++)
+			if(str.charAt(i)==' '){
+				System.out.println("space  ");
+			}else{
+				transStart=i;
+				break;
+			}
+				
+		//考虑的是没有带空格的情况
+	    if(str.charAt(transStart)=='-')
+	      positive=false;
+	     else if(str.charAt(transStart)<'0'||str.charAt(transStart)>'9')
+	      return -1;
+	    int count=0;      //统计连续数字的个数
+	    int start=positive?transStart:transStart+1;
+	    for(int i=start;i<length;i++){
+	      if(str.charAt(i)>='0'&&str.charAt(i)<='9'&&count<11){
+	        saveByOrder[count++]=str.charAt(i)-'0';
+	      }//if
+	      else
+	    	break;
+	    }//for
+	    System.out.println("count:  "+count+'\n');
+	    return count;            //count 统计的是数字的个数，在读取数组的时候需要注意减一
+	  }
+	  
+	public static int mi(int m){
+	    int num=1;
+	    for(int i=0;i<m;i++){
+	      num*=10;
+	    }//for
+	    return num;
+	  }
+	  
+	public static int calData(int[] data,int count){
+	    int num=0;
+	    for(int i=count-1;i>=0;i--){
+	      num+=data[i]*mi(count-1-i);
+	    }//for
+	    if(num<0)
+	      return Integer.MAX_VALUE;
+	     else
+	      return num;
+	  }
+	  
+	public static int myStoi(String str){
+	    int num=0;
+	    int countLength=readString(str);
+	    if(countLength<0)
+	      num=0;
+	    else{
+	      num=calData(saveByOrder,countLength);
+	      if(num==Integer.MAX_VALUE&&positive==false)
+	        num=Integer.MIN_VALUE;
+	    }//else
+	    return positive?num:-num;
+	  }
+	public static void main(String[] args){
+		while(true){
+			System.out.print("input the string or \"stop\" to stop   :");
+			Scanner sc=new Scanner(System.in);
+			String str=sc.nextLine();
+			if(str.equals("stop"))
+				break;
+			int num=myStoi(str);
+			
+		    System.out.println(str+'\n'+num);
+		    
+		}	    
+	  }
+}
