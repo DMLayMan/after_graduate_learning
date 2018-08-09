@@ -1,0 +1,52 @@
+判断一个数字是否为一个回文数----不采用将数字转为字符串的方法
+-----最容易想到的就是按位取出数字，然后判断。存到一个数组里面，然后比较。------但是这样肯定是很耗时的
+-----转为一个字符串就很简单了，但是还有没有别的方法呢？
+-----将这个数字reverse一下，然后判断reverse后的数字和之前的数字是否相等
+
+
+import java.util.Scanner;
+
+//判断一个数字是否为回文数
+public class PalindromeNumber {
+	
+  //--用反转的方式求解
+	public static boolean isPalindromeNumberReverse(int x){
+		if(x<0)
+			return false;
+		int reverse=0;
+		int temp=x;
+		while(temp!=0){
+			reverse=reverse*10+temp%10;
+			temp/=10;
+		}
+		return reverse==x;
+	}
+	
+  //用字符串的方式求解
+	public static boolean isPalindromeNumberString(int x){
+		String str=x+"";
+		int i=0,j=str.length()-1;
+		while(i<=j){
+			if(str.charAt(i)!=str.charAt(j))
+				return false;
+			i++;
+			j--;
+		}
+		return true;
+	}
+	
+	public static void main(String[] args){
+		while(true){
+			Scanner sc=new Scanner(System.in);
+			System.out.print("please input an integer : ");
+			int x=sc.nextInt();
+			if(x==1024)
+				break;
+			if(isPalindromeNumberReverse(x)){
+				System.out.println(x+" is a palindrome number");
+			}else{
+				System.out.println(x+" is not a palindrome number");
+			}
+		}
+	}
+}
