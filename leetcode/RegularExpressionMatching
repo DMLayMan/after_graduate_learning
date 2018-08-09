@@ -1,0 +1,88 @@
+given an input sting s and a pattern p , implement regular expression matching 
+
+模式匹配的算法  --只支持'.' '*'
+'.' -- 能匹配任意的单字符
+'*' -- 能对其前面出现的字符匹配0次或者多次
+
+算法设计：主要考虑这个匹配模式的字符串 p
+i---pointer of string s
+j---pointer of pattern string p
+
+if -----普通字符
+		match 		--- i++  j++
+		not match --- i    j++
+else if  -----'.'
+		i++ j++
+else  -----'*'
+		match i++ j 
+		not match i j++
+		
+如何判断是否匹配呢？
+首先要保证 s 已经匹配完了，再者就是 p 没有剩下要匹配的了。
+
+
+
+
+
+
+import java.util.Scanner;
+
+//简单地只包含 '.' 和 '*'的正则表达式匹配算法
+public class RegularExpMatching {
+	
+	public static boolean matching(String s,String p){
+		int i=0,j=0;
+		while(j<p.length()){
+			i=i==s.length()?s.length()-1:i;
+			if(i==s.length()-1){
+				j++;
+				if(j==p.length())
+					return true;
+				else{
+					if(s.charAt(i)==p.charAt(j))
+						continue;
+					else
+						return false;
+				}
+			}else{
+				if(p.charAt(j)=='.'){
+					i++;
+					j++;
+				}else if(p.charAt(j)=='*'){
+					if(p.charAt(j-1)=='.'){
+						i++;
+					}else{
+						if(p.charAt(j-1)==s.charAt(i)){
+							i++;
+						}else{
+							j++;
+						}
+					}					
+				}else{
+					if(s.charAt(i)==p.charAt(j)){
+						i++;
+						j++;
+					}else{
+						j++;
+					}
+				}
+			}
+			
+		}		
+		return true;
+	}
+	public static void main(String[] args){
+		while(true){
+			System.out.print("please input a string and a pattern : ");
+			Scanner sc=new Scanner(System.in);
+			String s=sc.next();
+			String p=sc.next();
+			if(s.equals("stop"))
+				break;
+			System.out.println(s+'\n'+p+'\n'+matching(s,p));
+		}
+		
+		System.out.print("stop ");
+	}
+	
+}
