@@ -8,113 +8,46 @@
 4.溢出处理：超过最大值和小于最小值，返回最大或最小值；
 5.由于2^31=2147483648  共10位，所以不必用一个32位的数组来存储读取的字符最多用11位就足够了；当指针超过10直接返回最大最小值。
 */
+-------------------------------------------
+*1.对string进行处理，先判断是否为空---如果为空，不检测直接执行代码会报错；其次，如果为空可以不用处理。
+*2.String.trim()-----裁剪，去掉string首部和尾部的空格
+*3.对int进行溢出判断不太好做，但是如果用一个long来存储计算的数值然后在和Integer.max min进行比较就能完事了
+*4.对于一个int[]存储的数计算sum，不要用mi的方法了。直接每次循环计算*10就好。
+public static int stoi(String str){
+		if(str.length()==0)
+			return 0;
+		String s=str.trim();
+		//System.out.println(s);
+		if(s.length()==0)
+			return 0;		
+		int sign=1,start=0;
+		long num=0;
+		if(s.charAt(0)=='+'){
+			sign=1;
+			start++;
+		}else if(s.charAt(0)=='-'){
+			sign=-1;
+			start++;
+		}		
+		for(int i=start;i<s.length();i++){
+			if(s.charAt(i)<'0'||s.charAt(i)>'9')
+				return (int)num*sign;
+			num=num*10+s.charAt(i)-'0';
+			if(sign==1&&num>Integer.MAX_VALUE)
+				return Integer.MAX_VALUE;
+			if(sign==-1&&num*sign<Integer.MIN_VALUE)
+				return Integer.MIN_VALUE;			
+		}				
+		return (int)num*sign;
+}
 
-一堆的问题亟待解决
-----------
+----------自己的版本-------------看着难受啊兄弟---------------------------------------------------------------------------------------
 import java.util.Scanner;
 
 public class MyStoi {
 	public static int[] saveByOrder=new int[11];      //按顺序存储读取的数字
-	public static boolean positive = true ;                //判断读取的字符串的正负，默认为正数
+	public static boolean ispositive = true ;                //判断读取的字符串的正负，默认为正数
 	public static int readString(String str){             //读取字符串：1.判断正负；2.填充整形数组。返回值返回的是从开始位置连续数字的长度，如果<0,输出0。
-	    if(str.contentEquals(""))//空字符串直接返回 -1
-	    	return -1;
-		int length=str.length();
-		
-		//考虑刚开始就带空格 --“   -42”
-		int transStart=0;
-		for(int i=0;i<str.length();i++)
-			if(str.charAt(i)==' '){
-				System.out.println("space  ");
-			}else{
-				transStart=i;
-				break;
-			}
-				
-		//考虑的是没有带空格的情况
-	    if(str.charAt(transStart)=='-')
-	      positive=false;
-	     else if(str.charAt(transStart)<'0'||str.charAt(transStart)>'9')
-	      return -1;
-	    int count=0;      //统计连续数字的个数
-	    int start=positive?transStart:transStart+1;
-	    for(int i=start;i<length;i++){
-	      if(str.charAt(i)>='0'&&str.charAt(i)<='9'&&count<11){
-	        saveByOrder[count++]=str.charAt(i)-'0';
-	      }//if
-	      else
-	    	break;
-	    }//for
-	    System.out.println("count:  "+count+'\n');
-	    return count;            //count 统计的是数字的个数，在读取数组的时候需要注意减一
-	  }
-	  
-	public static int mi(int m){
-	    int num=1;
-	    for(int i=0;i<m;i++){
-	      num*=10;
-	    }//for
-	    return num;
-	  }
-	  
-	public static int calData(int[] data,int count){
-	    int num=0;
-	    for(int i=count-1;i>=0;i--){
-	      num+=data[i]*mi(count-1-i);
-	    }//for
-	    if(num<0)
-	      return Integer.MAX_VALUE;
-	     else
-	      return num;
-	  }
-	  
-	public static int myStoi(String str){
-	    int num=0;
-	    int countLength=readString(str);
-	    if(countLength<0)
-	      num=0;
-	    else{
-	      num=calData(saveByOrder,countLength);
-	      if(num==Integer.MAX_VALUE&&positive==false)
-	        num=Integer.MIN_VALUE;
-	    }//else
-	    return positive?num:-num;
-	  }
-	public static void main(String[] args){
-		while(true){
-			System.out.print("input the string or \"stop\" to stop   :");
-			Scanner sc=new Scanner(System.in);
-			String str=sc.nextLine();
-			if(str.equals("stop"))
-				break;
-			int num=myStoi(str);
-			
-		    System.out.println(str+'\n'+num);
-		    
-		}	    
-	  }
-}
--------------//整理后的代码  但是还没有运行
-import java.util.Scanner;
-
-public class MyStoi{
-	/*
-	string to int 
-	1.输入空字符串；
-	2.字符串前面几个是空格；
-	3.溢出；
-	4.输出整数的正负；	
-	
-	实现思路：
-	Boolean 存储字符串的正负
-	int[] 用来存储从字符串中读取的数字序列
-	
-	*/
-	public static int[] saveByOrder=new int[11];        //长度11：int最大的数也不过是10位
-	public static boolean ispositive=true;              //默认转换的数值为正数
-	
-	//读取待转换的字符串中的连续数字 返回数字的长度 若返回值<0--直接返回0
-	public int readStr(String str){
 		int countLength=0;         //有效连续数字的长度
 		int start=0;
 		while(true){                      //找到转换开始的位置  start
@@ -139,40 +72,59 @@ public class MyStoi{
 		}
 		
 		return countLength;
-	}
-
-	//计算10的m次方
-	public int mi(int m){
-		int num=1;
-		for(int i=0;i<m;i++)
-			num*=10;
-		return num;
-	}
-	
-	//计算数组中的数值 返回的时候带正负
-	public int calData(int[] data,int countLength){
+	  }
+	  
+	public static int mi(int m){
+	    int num=1;
+	    for(int i=0;i<m;i++){
+	      num*=10;
+	    }//for
+	    return num;
+	  }
+	  
+	public static int calData(int[] data,int countLength){
 		int num=0;
+		boolean overflow=false;
 		if(countLength<=0)
 			return 0;
 		for(int i=countLength-1;i>=0;i--){
+			int temp=num;
 			num+=data[i]*mi(countLength-1-i);
+			System.out.println(num);
+			if(num<temp){
+				overflow=true;
+				break;
+			}
+				
 		}
 		
 		//处理溢出的情况
-		if(num==Integer.MAX_VALUE||num<0)
+		if(overflow)
 			return ispositive?Integer.MAX_VALUE:Integer.MIN_VALUE;
 		else	
 			return ispositive?num:-num;
-		
+	}
+	public static void displayArray(int[] data){
+		for(int i=0;i<data.length;i++)
+			System.out.print(data[i]);
+		return;
 	}
 	
+	public static int myStoi(String str){
+	    
+	    return calData(saveByOrder,readString(str));
+	  }
 	public static void main(String[] args){
 		while(true){
-			System.out.println("请输入待转换的字符串【input stop to stop】  :");
+			System.out.print("input the string or \"stop\" to stop   :");
 			Scanner sc=new Scanner(System.in);
-			String str=sc.readLine();
-			int num=calData(saveByOrder,readStr(str));
-			System.out.println(num);
-		}
-	}	
+			String str=sc.nextLine();
+			if(str.equals("stop"))
+				break;
+			int num=myStoi(str);
+			displayArray(saveByOrder);
+		    System.out.println('\n'+str+'\n'+num);
+		    
+		}	    
+	  }
 }
