@@ -1,0 +1,70 @@
+----medium----
+
+
+Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+For example, two is written as II in Roman numeral, just two one's added together. Twelve is written as, XII, which is simply X + II. The number twenty seven is written as XXVII, which is XX + V + II.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+
+3 -- III 
+4 -- IV
+9 -- IX
+58 -- LVIII
+
+----------------------------------------------------------------------------------
+思路：只对1000 100 10 1进行除法、取余运算。对于 500 50 5 只需要判断除数和5的大小就能解决；
+ 算法只对除数进行了分类判别：
+ 	t = num/value[i]
+	t==0   continue
+	t<4    t times symbol[i]
+	t==4   symbol[i]+symbol[i-1]
+	t<9    symbol[i-1]+ t-5 times symbol[i]
+	t==9   symbol[i]+symbol[i-2]
+	
+	-----------------------------------
+	public static String intToRoman(int num){
+		StringBuilder sb=new StringBuilder();		
+		int i=0;
+		while(num!=0){
+			int t=num/value[i];
+			if(t==0){
+				i+=2;
+				continue;
+			}else if(t<4){
+				while(t>0){
+					sb.append(symbol[i]);
+					t--;
+				}					
+			}else if(t==4){
+				sb.append(symbol[i]);
+				sb.append(symbol[i-1]);
+			}else if(t<9){
+				sb.append(symbol[i-1]);
+				t-=5;
+				while(t>0){
+					sb.append(symbol[i]);
+					t--;
+				}
+			}else{
+				sb.append(symbol[i]);
+				sb.append(symbol[i-2]);
+			}
+			num=num%value[i];
+			System.out.println("i "+i+" num "+num);
+			i+=2;
+		}
+		return sb.toString();
+	}
