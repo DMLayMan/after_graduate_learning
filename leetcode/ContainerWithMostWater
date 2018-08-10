@@ -1,0 +1,39 @@
+---easy
+
+给定一个非负的数组，假设数组内对应值就是一个容器边界的高度。选取两条边界，然后使者两条边界所围成的容器的容积最大。
+
+----v = length * height
+  length=j-i
+  height=min(height[i],height[j])
+ 
+ -----第一种不动脑子的解法，蛮力 brue force    O(n^2)
+ public static int maxArea(int[] height){
+		int maxArea=0;
+		for(int i=0;i<height.length-1;i++)
+			for(int j=i+1;j<height.length;j++){
+				int temp=(j-i)*(height[i]>height[j]?height[j]:height[i]);
+				maxArea=maxArea>temp?maxArea:temp;
+			}
+		
+		return maxArea;
+	}
+  
+  ---第二种，夹逼  left->    |     <-right 
+     首先保证容器的length最大，然后依次减小。length减小，每次移动的边界是最小高度所对应的边界【往中间移动】
+     public static int maxAreaE(int[] height){
+		int i=0,j=height.length-1;
+		int maxArea=0;
+		while(i<j){
+			int h=0;
+			if(height[i]<height[j])
+			{
+				h=height[i];
+				i++;
+			}else{
+				h=height[j];
+				j--;
+			}
+			maxArea=maxArea>(j-i+1)*h?maxArea:(j-i+1)*h;
+		}
+		return maxArea;
+	}
