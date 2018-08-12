@@ -1,0 +1,32 @@
+1.Comparator-----implements Interface Comparator<Object>
+  这是一个比较的接口，通过实现这个接口可以将对应的对象变为可比较的对象。
+  public int compare(Onject 01,Object o2){}
+  o1>o2-return positive
+  o1=o2-return zero
+  o1<o2-return negative
+  
+2.format --格式化输出          c的print
+  System.out.format("  format string ",args...)
+  
+3.Collection              Interface
+    List
+    Queue
+      Deque
+    Set
+      SortedSet
+        NavigableSet
+        
+  AbstractList            Class        implement Interface List
+    AbstractSequentialList
+      LinkedList             --链式列表            
+    ArrayList                --数组（顺序）列表 
+      AttributeList
+    Vector                   --向量
+      Stack                  --栈            利用向量实现了栈结构
+      
+      
+  Queue      接口下面的东西有点多，毕竟很多西方都需要用到队列这种数据结构。双向队列、阻塞队列、优先级队列...这些都是对应的有现成的类供使用
+  
+  Set         不包含重复对象的容器
+    ----HashSet  
+    ----EnumSet  枚举对象集合    这个类里面的静态方法返回很多enum set   具体有什么用呢？
