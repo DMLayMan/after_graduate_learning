@@ -1,0 +1,78 @@
+首先刚开始是 TensorFlow 的安装
+TensorFlow 只支持 Python 3.5.x的版本    --原本装的是 3.7.0 只好再装一个，然后安装以后需要配置环境变量
+
+下载、并安装好了 3.5.2 的版本  
+  然后就是环境变量的配置
+  只需要将以前配置的 3.7.0 的变量的对应文件夹改为当前安装的 3.5.2 的文件夹就好了   
+  有两个 E:\Python3.5.2; E:\Python3.5.2\Scripts;
+  
+  接下来就是利用 pip 安装TensorFlow 了
+  pip3 install --upgrade tensorflow     
+  
+  在pip安装过程中遇到了点问题，提示出现的问题是pip的版本不对 要求的是 pip18.0 的版本
+  然后按照提示信息
+  python -m pip install -upgrade pip
+  这里我记得是安装了两次，连着升级了两回
+  
+  然后，升级到 pip18.0 后就能重复上面的 TensorFlow 的安装了。
+  
+  ---------------------------------------------------------------------
+  接下来就是编程环节：
+    但是当你开始编程 import TensorFlow as tf 导入tensorflow包的时候就会出现无法找到模块的问题，
+    这个时候需要对项目进行一个环境配置
+    --setting  project interpreter 
+    选择 Python 3.5.2 看到下面加载已安装的包里面包含 TensorFlow 点击OK，然后就正式的开始编程了。
+    
+    ** 在运行编好的代码时会遇到一个CPU的一些报错
+    solution 
+    import os
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'     
+    **done
+  -------------------------------------------------------------------
+  机器学习：
+    输入、训练、输出
+  
+ ------------------------------------------------------------------------
+ 训练--- 莫烦的一个用例讲解
+ 
+ # create data
+ x_data = np.random.rand(100).astype(np.float32)
+ y_data = x_data*0.1 + 0.3
+ 
+ # create tf construcure start 
+ Weights = tf.Variable(tf.random_uniform([1], -1.0, 1.0)
+ biases = tf.Variable(tf.zeros([1]))
+ 
+ y = Weights*x_data + biases
+ loss = tf.reduce_mean(tf.squre(y - y_data))
+ optimizer = tf.train.GradientDescentOptimizer(0.5)
+ train = optimizer.minimize(loss)
+ 
+ init = tf.global_variables_initializer()
+ # end 
+ sess = tf.Session()
+ sess.run(init)
+ 
+ for step in range(201):
+      sess.run(train)
+      if step%20 == 0:
+        print(step, sess.run(Weights), sess.run(biases))
+        
+  sess.close()
+ 
+ ------------------------------------------------------------
+ session 的测试
+ 两种用法
+ # method 1 
+ sess = tf.Session()          --需要手动关闭 session
+ sess.run(--)
+ sess.close()
+ # method 2                   --使用了with语句，控制结束后 sess自动失效【作用域的问题】
+ with tf.Session() as sess:
+    sess.run()
+    
+ -------------------------------------------------------------
+ TensorFlow 的基本的函数使用  constant 
+ 
+    
+ 
