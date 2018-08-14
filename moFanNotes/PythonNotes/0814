@@ -1,0 +1,56 @@
+# 文件读写   open  close
+
+s = 'this is my text \n do what you want'
+
+# open()  return a file instance
+# r  -- read
+# w  -- write
+# a  -- append
+# r+ -- read and write
+# w+ -- clean \ then support read and write op
+# a+ -- read and write ,by this way move the printer to the tail
+# b  -- open file in binary mode
+my_file = open('c:\\users\\606\\Desktop\\tt.txt', 'r+')
+# read file
+
+
+# file.readlines()   return a list of lines [ 'first line', 'second line' .......
+# file.readline()  invoke one time ,the printer will move to the next line
+# line1 = my_file.readlines()
+# line2 = my_file.readline()
+
+
+
+class
+
+class phone:
+  name = 'honor'
+  price = 2400
+ 
+ def __init__(self, name='honor', price=2400):                    ---只能有一个init function
+  
+ 
+  def display(self):
+    print('name', self.name, '  price ',  self.price)
+    
+ 
+ myphone = phone()                       ------实例化
+ myphone.  调用
+ 
+ 
+ input
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
