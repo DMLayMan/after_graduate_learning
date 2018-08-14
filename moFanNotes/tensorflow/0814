@@ -1,0 +1,18 @@
+1.tensorboard    神经网络的可视化 
+with tf.name_scope('name'):
+name=
+
+layer、inputs 、outputs 、weights、biases
+
+tf.summary.FileWriter('file direction', sess.graph)  sess.graph 就是一个字段值
+
+run 
+
+在对应的文件夹下会生成一个 events.out.......的一个文件
+然后打开命令行窗口
+tensorboard --logdir="wk/"
+然后对应的就会输出一个本地的网址，复制后在浏览器内打开查看。
+
+summary 模块
+
+2.分类问题  分类学习     -------感觉有点累了  就换一个
