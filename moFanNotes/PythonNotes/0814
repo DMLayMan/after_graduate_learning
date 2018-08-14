@@ -38,9 +38,20 @@ class phone:
  myphone.  调用
  
  
- input
+ input    --最简单的就是 获取到input的以回车结尾的字符串
  
  
+ 如何导入一个自己创建的类  
+ 文件结构：  Tt          -----package
+               Phone    -----.py 类的实现文件
+               
+ from Tt.Phone import *
+ 
+ p = Phone()
+ p.display()
+ 
+ 
+ ------------------------done----------------------------
  
  
  
