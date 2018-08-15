@@ -1,0 +1,21 @@
+classification 
+数字图片的分类    图片的文件输入 28*28 的矩阵
+
+只有一个 prediction layer
+prediction = add_layer（inputs， 28*28， 10， activation_function= tf.tt.softmax）
+-----需要了解一下TensorFlow的激励函数----remain
+
+xs = tf.placeholder(tf.float32, [None, 28*28])       ----None 占得位置表示的是不考虑sample的个数，就是没有规定其数据量的大小
+
+----------------------------
+loss ---cost function
+
+train_step  -- 如何训练  采用什么方法使 loss 最优
+
+
+
+还看了 movan 的cnn   卷积神经网络
+大致的过程加上以前学看的，能够了解这个流程。
+
+但是离搞懂这些东西，还是有很长的一段路的。
+
