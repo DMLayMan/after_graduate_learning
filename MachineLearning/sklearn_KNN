@@ -1,0 +1,7 @@
+sklearn.neighbors
+classification & regression  分别对应的是KNeighborsClassifier & KNeighborsRegressior
+KNN -- k nearest neighbors  这里对应的参数是 n_neighbors=K
+
+寻找K近邻的算法一般有三种：
+1.蛮力算法--遍历搜索所有的解，然后列举出最近的k个顶点；
+2.KD tree--构造kd tree 有一个叶子节点的集合大小限制 【leaf size】，中位数，对应每一层集合分割的特征选择【顺序循环选择特征】
