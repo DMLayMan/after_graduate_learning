@@ -4,4 +4,42 @@ KNN -- k nearest neighbors  这里对应的参数是 n_neighbors=K
 
 寻找K近邻的算法一般有三种：
 1.蛮力算法--遍历搜索所有的解，然后列举出最近的k个顶点；
-2.KD tree--构造kd tree 有一个叶子节点的集合大小限制 【leaf size】，中位数，对应每一层集合分割的特征选择【顺序循环选择特征】
+2.KD tree--[矩形分割]构造kd tree 有一个叶子节点的集合大小限制 【leaf size】，中位数，对应每一层集合分割的特征选择【顺序循环选择特征】
+3.ball tree--[球形分割]
+
+kd_tree 的建树算法：
+关键--【迭代】决定分割的特征向量、以集合内点的特征向量的中位数作为分割点
+
+ball_tree 的建树算法：【提及了聚类的概念】
+关键--【递归】首先构建一个包含当前数据集的最小超球体；
+              而后在数据集中选择一个离球中心最远的点A，然后再选择一个距离A最远的点B，将剩下的点分配给距离这两个聚类中心最近的那个聚类点
+              【这样便将当前的集合划分成了两个小的集合】，而后再构建一个包含当前集合【聚类分配后的集合】的最小超球体。
+              ---在每一个超球体内进行同样的操作，直至满足一定的结束条件。
+
+-----------目前对这个KNN 的搜索算法 algorithm 参数值的选取还是不太明朗【default algorithm=auto】
+
+在算法计算过程中，使用什么计算、度量方法。metric -- default minkowski = Σ[(xi - xj)^p]^(1/p)
+能够调整的参数就是minkowski 计算的p，p=2时 度量标准就是几何距离【普通的距离度量方法】
+
+
+参数总结：
+1.n_neighbors ： knn算法需要判断找出目标点的多少个邻近的点
+2.algorithm   ： 选择knn的实现算法[brute force \ kd tree \ ball tree]
+3.metric      :  选择点间距离的度量标准
+4.p           :  默认minkowski度量标准的参数p
+5.leaf_size   ： 叶子节点的大小，这个和kd_tree 以及 ball_tree相关，size越大，建树的收敛速度就越快；
+
+----------- --------- ----- ----------- ----------- ----------------- --------------- -------------- ------
+首先是设置具体的参数，获取到对应的分类器KNeighborsClassifier or KNeighborsRegressior的对象实例
+--定义了一个寻找最近的七个邻居点、随机选择搜索算法、叶结点大小为30的分类规则
+neigh = KNeighborsClassifier(n_neighbors=7, algorithm=auto， leaf_size=30) 
+
+neigh.fit(X, y)     -- 填入训练数据X，以及对应的目标值y. 建树
+
+neigh.predict(X)    --对数据X进行预测，返回值为预测的目标值
+
+neigh.predict_proba(X) --对数据进行预测，返回值为每个目标值的预测概率
+-----these three method is essential ,others just ignore them.
+
+------------------------------------------剩下KNN的应用环境balabala那些东西------user code
+
