@@ -1,0 +1,140 @@
+#include "pch.h"
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+constexpr auto MAX_VALUE = 100000000;;
+
+
+
+int N;			//the number of the vertices
+int P;			//the number of thr center vertices
+int** edge;		//graph N*N
+int** f_table;	//N*2
+int** d_table;  //N*2
+int* solution;  //N*1
+
+//读取文件，对问题的基本参数进行初始化 
+//remain ----数据文件有点看不太懂
+void init_variables(int n, int p) {
+	N = n;
+	P = p;
+	f_table = create_array2D(N,2,MAX_VALUE);
+	d_table = create_array2D(N,2,-1);
+	edge = create_array2D(N, N, MAX_VALUE);
+
+	/*
+	下面就要开始读文档 然后获取对应的无向图
+	*/
+
+
+
+	return;
+};
+
+
+int** create_array2D(int m, int n, int value) {
+	int** p = new int*[m];
+	for (int i = 0; i < m; i++) {
+		p[i] = new int[2];
+		p[i][0] = value;
+		p[i][1] = value;
+	}
+	return p;
+}
+
+
+//创建初始解
+int* create_solution() {
+	int* s = new int[N];
+	s[0] = rand() % N + 1;
+	int temp = 0;
+	int index = -1;
+	for (int i = 0; i < N; i++) {
+		if (edge[s[0]][i] > temp)
+		{
+			temp = edge[s[0]][i];
+			index = i;
+		}
+	}
+	s[1] = index;
+	update_fd_table(s[0]);
+	update_fd_table(s[1]);
+
+	for (int i = 2; i < P; i++) {
+		s[i] = longest_serve_edge();
+		update_fd_table(s[i]);
+	}
+
+	return s;
+};
+
+
+void update_fd_table(int index) {
+	for(int i=0;i<N;i++){
+		if (edge[i][index] < d_table[i][0]) {
+			f_table[i][1] = f_table[i][0];
+			f_table[i][0] = index;
+			d_table[i][1] = d_table[i][0];
+			d_table[i][0] = edge[i][index];
+		}
+		else if (edge[i][index] < d_table[i][1]) {
+			f_table[i][1] = index;
+			d_table[i][1] = edge[i][index];
+		}
+	}
+}
+
+//寻找最长的服务边  返回的是最长服务边上的被服务节点的index
+int longest_serve_edge() {
+	int temp = 0;
+	int index = -1;
+	for (int i = 0; i < N; i++) {
+		if (d_table[i][0] > temp) {
+			temp = d_table[i][0];
+			index = i;
+		}
+	}
+	return index;
+}
+
+
+//还没有解决 ---目前还没找到不错的方案来解决这个东西 
+//嫌弃O(k*N)的复杂度太高
+
+//在d_table[i][0]中查找长度前k长的被服务结点  返回查找到的结点数组
+int* swap_set(int k) {
+	int* sset = new int[k];
+	return sset;
+}
+
+//执行fellow 和 boss交换的邻域动作，并与之前最好的动作的评估值进行比较
+int* swap_evluate(int fellow, int boss, int* evluate_record) {
+
+}
+
+//在得到最好邻域动作后，执行交换
+//删除的时候，需要再找一个备用服务点
+void swap(int* evaluate_record) {
+
+}
+
+
+void print_solution() {
+	for (int i = 0; i < N; i++)
+		cout << solution[i] << "  ";
+}
+
+
+
+int main()
+{
+	init_variables(100, 10);
+
+
+	solution = create_solution();
+    
+	print_solution();
+
+
+}
